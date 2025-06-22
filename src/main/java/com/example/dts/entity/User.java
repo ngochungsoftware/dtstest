@@ -77,6 +77,16 @@ public class User {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    // Soft delete method
+    public void softDelete() {
+        this.deleted = true;
+        this.deletedAt = LocalDateTime.now();
+    }
 
+    // Restore method
+    public void restore() {
+        this.deleted = false;
+        this.deletedAt = null;
+    }
 
 }
