@@ -10,7 +10,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: create
     show-sql: true
     properties:
       hibernate:
@@ -23,6 +23,9 @@ spring:
       name: admin
       password: admin123
 
+  flyway:
+    enabled: false
+
 # JWT Configuration
 jwt:
   secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
@@ -33,7 +36,7 @@ jwt:
 
 # Server Configuration
 server:
-  port: 8081
+  port: 8080
   servlet:
     context-path: /api
 
