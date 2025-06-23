@@ -105,6 +105,13 @@ public class UserService {
         return modelMapper.map(updatedUser, UserDto.class);
     }
 
+
+    public UserDto getUserByUsername(String username) {
+        User user = userRepository.findByUsernameAndDeletedFalse(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with username: " + username));
+        return modelMapper.map(user, UserDto.class);
+    }
+
     public void deleteUser(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
