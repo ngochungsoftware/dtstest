@@ -15,48 +15,131 @@ REST API quản lý user với authentication, authorization và soft delete s�
 - ✅ Pagination và sorting
 - ✅ Search functionality
 
-## Yêu cầu hệ thống
+## Yêu cầu môi trường
 
-- Java 17 hoặc cao hơn
-- Maven 3.6+
-- MySQL 8.0+
-- Docker và Docker Compose (tùy chọn)
+- **Java 17** hoặc cao hơn
+- **Maven 3.6+**
+- **MySQL 8.0+** (nếu chạy local, không dùng Docker)
+- **Docker & Docker Compose** (nếu muốn chạy nhanh toàn bộ bằng Docker)
+- **Postman** hoặc công cụ test API tương tự để kiểm thử
 
-## Cài đặt và chạy
+## Hướng dẫn cài đặt & chạy project
 
-### Cách 1: Chạy với Docker (Khuyến nghị)
+### Cách 1: Chạy với Docker (Khuyến nghị cho người mới)
 
 1. **Clone repository**
    ```bash
    git clone <repository-url>
    cd user-management-api
    ```
-
 2. **Build và chạy với Docker Compose**
    ```bash
    docker-compose up --build
    ```
+3. **Truy cập API**
+   - API: http://localhost:8080/api
+   - Health check: http://localhost:8080/api/auth/health
 
-3. **Truy cập ứng dụng**
-    - API: http://localhost:8080/api
-    - Health check: http://localhost:8080/api/auth/health
-
-### Cách 2: Chạy local
+### Cách 2: Chạy local (Tùy chỉnh cấu hình DB nếu cần)
 
 1. **Cài đặt MySQL**
-    - Cài đặt MySQL 8.0
-    - Tạo database: `user_management`
-    - Cập nhật thông tin kết nối trong `application.yml`
-
+   - Cài đặt MySQL 8.0
+   - Tạo database: `user_management`
+   - Cập nhật thông tin kết nối trong `src/main/resources/application.yml` nếu khác mặc định
 2. **Build project**
    ```bash
-   mvn clean install
+   ./mvnw clean install
    ```
-
 3. **Chạy ứng dụng**
    ```bash
-   mvn spring-boot:run
+   ./mvnw spring-boot:run
    ```
+   hoặc
+   ```bash
+   java -jar target/dts-0.0.1-SNAPSHOT.jar
+   ```
+4. **Truy cập API**
+   - API: http://localhost:8080/api
+
+## Tài khoản mẫu để test
+
+| Vai trò     | Username   | Password      | Email                | Role      |
+|-------------|------------|--------------|----------------------|-----------|
+| Admin       | admin      | admin123     | admin@example.com    | ADMIN     |
+| Moderator   | moderator  | moderator123 | moderator@example.com| MODERATOR |
+| User        | user       | user123      | user@example.com     | USER      |
+
+Các tài khoản này sẽ được tự động tạo khi ứng dụng khởi động (nếu chưa có trong database).
+
+## Hướng dẫn test API với Postman
+
+1. **Đăng nhập lấy token**
+   - URL: `POST http://localhost:8080/api/auth/login`
+   - Body:
+     ```json
+     {
+       "usernameOrEmail": "admin",
+       "password": "admin123"
+     }
+     ```
+   - Lấy giá trị `token` trong response để test các API khác.
+
+2. **Gọi các API khác**
+   - Thêm header:
+     ```
+     Authorization: Bearer <token>
+     ```
+   - Ví dụ lấy danh sách user:
+     ```bash
+     curl -X GET http://localhost:8080/api/users \
+       -H "Authorization: Bearer <token>"
+     ```
+
+3. **Tạo user mới**
+   - URL: `POST /api/users`
+   - Body:
+     ```json
+     {
+       "name": "Test User",
+       "username": "testuser",
+       "password": "test123",
+       "email": "testuser@example.com",
+       "phone": "+84123456789",
+       "avatar": "https://via.placeholder.com/150"
+     }
+     ```
+
+4. **Cập nhật user**
+   - URL: `PUT /api/users/{id}`
+   - Body:
+     ```json
+     {
+       "name": "Updated Name",
+       "username": "testuser",
+       "email": "testuser@example.com",
+       "phone": "+84123456789",
+       "avatar": "https://via.placeholder.com/150"
+     }
+     ```
+
+5. **Xóa user**
+   - URL: `DELETE /api/users/{id}`
+
+6. **Khôi phục user đã xóa**
+   - URL: `POST /api/users/{id}/restore`
+
+7. **Đổi quyền hoặc trạng thái user**
+   - URL: `PUT /api/users/{id}/role?role=MODERATOR`
+   - URL: `PUT /api/users/{id}/status?status=INACTIVE`
+
+## Lưu ý
+- Các API (trừ `/api/auth/**`) đều cần gửi header `Authorization: Bearer <token>`.
+- Nếu gặp lỗi kết nối DB, kiểm tra lại cấu hình MySQL và đảm bảo DB đã chạy.
+- Nếu dùng Docker, mọi thứ sẽ tự động cấu hình.
+
+## Tham khảo thêm
+- Xem chi tiết các endpoint và ví dụ trong phần API Endpoints phía dưới README này.
+- Nếu gặp lỗi, xem log server để biết nguyên nhân và gửi log khi cần hỗ trợ.
 
 ## Cấu hình Database
 

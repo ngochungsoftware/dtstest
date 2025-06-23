@@ -1,0 +1,102 @@
+{
+  "info": {
+    "name": "User Management API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Login",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"usernameOrEmail\": \"admin\",\n  \"password\": \"admin123\"\n}"
+        },
+        "url": { "raw": "http://localhost:8080/api/auth/login", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "auth", "login"] }
+      }
+    },
+    {
+      "name": "Get Users",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": { "raw": "http://localhost:8080/api/users", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "users"] }
+      }
+    },
+    {
+      "name": "Create User",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Test User\",\n  \"username\": \"testuser\",\n  \"password\": \"test123\",\n  \"email\": \"testuser@example.com\",\n  \"phone\": \"+84123456789\",\n  \"avatar\": \"https://via.placeholder.com/150\"\n}"
+        },
+        "url": { "raw": "http://localhost:8080/api/users", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "users"] }
+      }
+    },
+    {
+      "name": "Update User",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Updated Name\",\n  \"username\": \"testuser\",\n  \"email\": \"testuser@example.com\",\n  \"phone\": \"+84123456789\",\n  \"avatar\": \"https://via.placeholder.com/150\"\n}"
+        },
+        "url": { "raw": "http://localhost:8080/api/users/2", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "users", "2"] }
+      }
+    },
+    {
+      "name": "Delete User",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": { "raw": "http://localhost:8080/api/users/2", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "users", "2"] }
+      }
+    },
+    {
+      "name": "Restore User",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": { "raw": "http://localhost:8080/api/users/2/restore", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "users", "2", "restore"] }
+      }
+    },
+    {
+      "name": "Change User Role",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": { "raw": "http://localhost:8080/api/users/2/role?role=MODERATOR", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "users", "2", "role"], "query": [{"key": "role", "value": "MODERATOR"}] }
+      }
+    },
+    {
+      "name": "Change User Status",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": { "raw": "http://localhost:8080/api/users/2/status?status=INACTIVE", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "users", "2", "status"], "query": [{"key": "status", "value": "INACTIVE"}] }
+      }
+    }
+  ]
+} 
